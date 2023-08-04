@@ -198,7 +198,7 @@ def dashboard(request):
     category_data_list={'book_category': c_name, 'count':c_count}
     category_data_list_zip = zip(c_name, c_count)
     user_count = User.objects.count()
-    return render(request, 'backend/dashboardex.html', locals())
+    return render(request, 'backend/dashboard.html', locals())
 
 def detail_view(request, pk):
     book = Book.objects.get(id=pk)
