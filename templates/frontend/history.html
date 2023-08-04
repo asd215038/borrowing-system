@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="h1 d-flex justify-content-center">
+        借閱紀錄
+    </h1>
+    <table id='table_id' class="display table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr class="col-4">
+                <th>圖書名稱</th>
+                <th>借閱時間</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in user_borrow_records %}
+            <tr class="col-4">
+                <td>{{ record.book.book_name }}</td>
+                <td>{{ record.borrow_time }}</td>
+                <td>
+                    {% if record.return_state == 0 and record.return_state_request == 0 %}
+                    <a type="submit" href="/borrow/book/giveback/{{record.id}}" class="btn btn-success">歸還</a>
+                    {% elif record.return_state_request == 1%}
+                    已送出請求
+                    {% else %}
+                    已歸還
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="container">
+    <div class='row'>
+        <div class="col-4">
+            <h3>會員借閱紀錄統計：</h3>
+            <ul>
+                {% for cat, cnt in c_zip %}
+                <li>{{ cat }} 有 {{ cnt }} 本書。</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-8">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+</div>
+{{ category_list }}
+{{ count_list }}
+<script>
+   $(document).ready( function () {
+        $('#table_id').DataTable(); 
+    } );
+</script>
+<script>
+    const ctx = document.getElementById('myChart');
+    const labels = JSON.parse('{{ category_data|escapejs }}');
+    const data = JSON.parse('{{ count_data|escapejs }}');
+    
+    new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '# of Votes',
+        data: data,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+    });
+</script>
+{% endblock  %}
+
+
+    

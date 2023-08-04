@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="h1 d-flex justify-content-center">
+        書籍管理維護
+    </h1>
+    
+    <button type="button" class="btn btn-success">
+        <a style="color: #fff;" href="/backend/book/new">新增書籍</a>
+    </button>
+    
+    <table id='table_id' class="display table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>圖書名稱</th>
+                <th>出版社</th>
+                <th>分類</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td id="product_name_{{item.id}}">{{ item.book_name }}</td>
+                <td style='white-space: nowrap;' id="product_description_{{item.id}}">{{ item.publisher.publisher_name }}</td>
+                <td style='white-space: nowrap;' id="product_description_{{item.id}}">{{ item.book_category.category }}</td>
+                <td>
+                    <a href="/backend/book/update/{{item.id}}" class="btn btn-info">修改</a>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{item.id}}" >刪除</button>
+                </td>
+                <div class="modal fade" id="exampleModal{{item.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">商品刪除確認</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" id="myInput">
+                                <form action="/backend/book/delete/{{item.id}}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-danger" value="刪除" />
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready( function () {
+         $('#table_id').DataTable(); 
+     } );
+ </script>
+{% endblock %}

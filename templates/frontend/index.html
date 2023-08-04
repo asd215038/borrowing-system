@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h1 class="h1 d-flex justify-content-center">
+    書籍總覽
+  </h1>
+  <div class='row'>
+    {% for contact in page_obj %}
+    <div class='col-xl-3 mt-2 book-card'>
+        <div class="card border-0">
+          <img src="/static/media/B.jpg" class="card-img card-img-top" alt="..."  data-contact-id="{{ contact.id }}">
+          <div class="card-body">
+            <p class="card-text book-name"data-toggle="tooltip" data-placement="bottom" title="{{ contact.book_name }}">{{ contact.book_name }}</p>
+            <p class="card-text">{{ contact.publisher.publisher_name }}</p>
+            <p class="card-text">{{ contact.book_category.category }}</p>
+            {% if contact.give_back == 1 %}
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal{{contact.id}}" >借閱</button>
+            {% else %}
+            <button type="button" class="btn btn-secondary" disabled>已借出</button>
+            {% endif %}
+            <div class="modal fade" id="exampleModal{{contact.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">書籍借閱確認</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body" id="myInput">
+                    <form action="/borrow/book/borrow/{{contact.id}}" method="POST">
+                      {% csrf_token %}
+                      <input type="submit" class="btn btn-success" value="確認" />
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+<div class="d-flex justify-content-center">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+      {% endif %}
+    
+      <span class="current page-link">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+      </span>
+      
+      {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+
+<script>
+  $('#exampleModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})
+
+$('.book-name').each(function(){
+  var bookName = $(this).text();
+    if ( bookName.length > 10 ){
+      bookName = bookName.substring(0, 10) + '...';
+    }
+    $(this).text(bookName);
+});
+
+$('.card-img').click(function() {
+  var contactId = $(this).data('contact-id'); //attr
+  window.location.href = '/book/details/' + contactId ;
+});
+
+</script>
+{% endblock %}
+

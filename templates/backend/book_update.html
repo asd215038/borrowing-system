@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="exampleFormControlFile1">{{form.book_name.label}}</label>
+      {{form.book_name}}
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">{{form.publisher.publisher_name.label}}</label>
+      <select name="{{ form.publisher.name }}" class="form-control">
+        {% for category in form.publisher.field.queryset %}
+        <option value="{{ category.pk }}">{{ category.publisher_name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label>{{ form.book_category.label }}</label>
+      <select name="{{ form.book_category.name }}" class="form-control">
+        {% for c in form.book_category.field.queryset %}
+        <option value="{{ c.pk }}">{{ c.category }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class='d-flex flex-row-reverse bd-highlight'>
+      <input class="btn btn-primary" type="submit" value="更新" />
+    </div>
+  </form>
+</div>
+{% endblock %}

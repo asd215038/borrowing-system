@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="h1 d-flex justify-content-center">
+        借閱紀錄
+    </h1>
+    <table id='table_id' class="display table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr class="col-4">
+                <th>圖書名稱</th>
+                <th>借閱時間</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in giveback_requests %}
+            <tr class="col-4">
+                <td>{{ request.book.book_name }}</td>
+                <td>{{ request.borrow_time }}</td>
+                <td>
+                    {% if request.return_state_request == 1 %}
+                    <a type="submit" href="/backend/history/management/approve/{{request.id}}" class="btn btn-success">確認</a>
+                    {% else %}
+                    已歸還
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready( function () {
+         $('#table_id').DataTable(); 
+     } );
+ </script>
+{% endblock  %}
