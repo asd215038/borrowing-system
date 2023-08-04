@@ -16,45 +16,26 @@
   .content {
     background-color:white;
   }
-  body {
-    color: blue;
-  }
 </style>  
 {% endblock %}
 {% block content %}
 <div class="container-fluid" style="top:0; bottom:0;">
   <div class="row" style="top:0; bottom:0;">
-      <div class="col-md-3" style="background-color:rgb(77, 77, 77); top:0; bottom:0; padding-top: 20px;">
+      <div class="col-md-2" style="background-color:rgb(77, 77, 77); top:0; bottom:0; padding-top: 20px;">
           <nav>
             <ul style="list-style-type: none; font-size:20px; bottom:0;">
               <li class="data-title"><a href="#">
-                  <i class="bi bi-meta"></i>
-                  <span class="nav-item">Meta</span>
+                  <i class="text-white bi bi-book"></i>
+                  <span class="nav-item text-white">Book</span>
               </a></li>
               <li class="data-title"><a href="">
-                  <i class="bi bi-messenger"></i>
-                  <span class="nav-item">Messenger</span>
+                  <i class="text-white bi bi-person-circle"></i>
+                  <span class="nav-item text-white">User</span>
               </a></li>
-              <li class="data-title"><a href="">
-                  <i class="bi bi-instagram"></i>
-                  <span class="nav-item">Instagram</span>
-              </a></li>
-              <li class="data-title"><a href="">
-                  <i class="bi bi-youtube"></i>
-                  <span class="nav-item">Youtube</span>
-              </a></li>
-              <li class="data-title"><a href="">
-                  <i class="bi bi-twitter"></i>
-                  <span class="nav-item">Twitter</span>
-              </a></li>
-              <li class="data-title"><a href="">
-                  <i class="bi bi-github"></i>
-                  <span class="nav-item">Github</span>
-              </a></li>
-          </ul>
+            </ul>
           </nav>
       </div>
-      <div class="col-md-9 main-bg">
+      <div class="col-md-10 main-bg">
         
         <div class="col">
         <h1 class="h2 border-bottom border-secondary">DashBoard</h1>
@@ -107,17 +88,48 @@
           </div>
   </div>
 </div>
-
-<script>
-  const ctx = document.getElementById('myChart');
-  
-  const labels = {{ publisher_data_list.publisher|safe }};
-  const data = {{ publisher_data_list.count }};
-  
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels,
+<footer class="container">
+  <ul class="d-flex justify-content-between" style="list-style-type: none; font-size:20px; bottom:0;">
+    <li class="data-title"><a href="#">
+      <i class="text-dark bi bi-meta"></i>
+      <span class="nav-item text-dark">Meta</span>
+    </a></li>
+    <li class="data-title"><a href="">
+      <i class="text-dark bi bi-messenger"></i>
+      <span class="nav-item text-dark">Messenger</span>
+    </a></li>
+    <li class="data-title"><a href="">
+      <i class="text-dark bi bi-instagram"></i>
+      <span class="nav-item text-dark">Instagram</span>
+    </a></li>
+    <li class="data-title"><a href="">
+      <i class="text-dark bi bi-youtube"></i>
+      <span class="nav-item text-dark">Youtube</span>
+    </a></li>
+    <li class="data-title"><a href="">
+      <i class="text-dark bi bi-twitter"></i>
+      <span class="nav-item text-dark">Twitter</span>
+      </a></li>
+      <li class="data-title"><a href="">
+        <i class="text-dark bi bi-github"></i>
+        <span class="nav-item text-dark">Github</span>
+      </a></li>
+      <li class="data-title"><a href="">
+        <i class="text-dark bi bi-facebook"></i>
+        <span class="nav-item text-dark">FaceBook</span>
+      </a></li>
+    </ul>
+  </footer>
+    <script>
+      const ctx = document.getElementById('myChart');
+      
+      const labels = {{ publisher_data_list.publisher|safe }};
+      const data = {{ publisher_data_list.count }};
+      
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
       datasets: [{
         label: '各出版社書籍量統計',
         data: data,
@@ -172,12 +184,3 @@
   
 </script>
 {% endblock %}
-<div class="col-md-4 my-2">
-  <h3>其他統計：</h3>
-  <ul>
-    <li>借閱次數總計: {{ borrows_count }} </li>
-    <li>歸還總計: {{ returned_count }} </li>
-    <li>未歸還總計: {{ not_returned_count }} </li>
-    <li>會員人數: {{ not_returned_count }} </li>
-  </ul>
-</div>
