@@ -16,7 +16,7 @@
             {% for record in user_borrow_records %}
             <tr class="col-4">
                 <td>{{ record.book.book_name }}</td>
-                <td>{{ record.borrow_time }}</td>
+                <td>{{ record.borrow_time|date:"Y-m-d" }}</td>
                 <td>
                     {% if record.return_state == 0 and record.return_state_request == 0 %}
                     <a type="submit" href="/borrow/book/giveback/{{record.id}}" class="btn btn-success">歸還</a>
@@ -50,7 +50,9 @@
 {{ count_list }}
 <script>
    $(document).ready( function () {
-        $('#table_id').DataTable(); 
+        $('#table_id').DataTable({
+            "order": [[1, "desc"]]
+        }); 
     } );
 </script>
 <script>
