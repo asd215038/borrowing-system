@@ -24,11 +24,11 @@
       <div class="col-md-2" style="background-color:rgb(77, 77, 77); top:0; bottom:0; padding-top: 20px;">
           <nav>
             <ul style="list-style-type: none; font-size:20px; bottom:0;">
-              <li class="data-title"><a href="#">
+              <li class="data-title"><a href="/backend/dashboard/book">
                   <i class="text-white bi bi-book"></i>
                   <span class="nav-item text-white">Book</span>
               </a></li>
-              <li class="data-title"><a href="">
+              <li class="data-title"><a href="/backend/dashboard/user">
                   <i class="text-white bi bi-person-circle"></i>
                   <span class="nav-item text-white">User</span>
               </a></li>
@@ -119,6 +119,8 @@
         <span class="nav-item text-dark">FaceBook</span>
       </a></li>
     </ul>
+    {{ publisher_data_list.publisher|safe }}
+    {{ publisher_data_list.count }}
   </footer>
     <script>
       const ctx = document.getElementById('myChart');
