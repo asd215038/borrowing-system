@@ -7,8 +7,8 @@
   <div class='row'>
     {% for contact in page_obj %}
     <div class='col-xl-3 mt-2 book-card'>
-        <div class="card border-0">
-          <img src="/static/media/B.jpg" class="card-img card-img-top" alt="..."  data-contact-id="{{ contact.id }}">
+        <div id="book-card" class="card border-0">
+          <img src="/static/media/B.jpg" class="card-img card-img-top" alt="..." data-contact-id="{{ contact.id }}">
           <div class="card-body">
             <p class="card-text book-name"data-toggle="tooltip" data-placement="bottom" title="{{ contact.book_name }}">{{ contact.book_name }}</p>
             <p class="card-text">{{ contact.publisher.publisher_name }}</p>
@@ -63,6 +63,26 @@
   </nav>
 </div>
 
+<div class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   $('#exampleModal').on('shown.bs.modal', function () {
   $('#myInput').trigger('focus')
@@ -76,11 +96,17 @@ $('.book-name').each(function(){
     $(this).text(bookName);
 });
 
-$('.card-img').click(function() {
-  var contactId = $(this).data('contact-id'); //attr
-  window.location.href = '/book/details/' + contactId ;
-});
+$('#exampleModal').on('shown.bs.modal', function () {
+  $('#imgModal').modal('show');
+})
 
 </script>
 {% endblock %}
 
+
+
+
+$('.card-img').click(function() {
+  var contactId = $(this).attr('data-contact-id');
+  window.location.href = '/book/details/' + contactId ;
+});
