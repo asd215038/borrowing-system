@@ -16,76 +16,57 @@
   .content {
     background-color:white;
   }
-  body {
-    color: blue;
-  }
 </style>  
 {% endblock %}
 {% block content %}
 <div class="container-fluid" style="top:0; bottom:0;">
   <div class="row" style="top:0; bottom:0;">
-      <div class="col-md-3" style="background-color:rgb(77, 77, 77); top:0; bottom:0; padding-top: 20px;">
+      <div class="col-md-2" style="background-color:rgb(77, 77, 77); top:0; bottom:0; padding-top: 20px;">
           <nav>
             <ul style="list-style-type: none; font-size:20px; bottom:0;">
-              <li class="data-title"><a href="#">
-                  <i class="icon-img bi bi-meta"></i>
-                  <span class="nav-item text-white">Meta</span>
+              <li class="data-title"><a href="/backend/dashboard/book">
+                  <i class="text-white bi bi-book"></i>
+                  <span class="nav-item text-white">Book</span>
               </a></li>
-              <li class="data-title"><a href="">
-                  <i class="icon-img bi bi-messenger"></i>
-                  <span class="nav-item text-white">Messenger</span>
+              <li class="data-title"><a href="/backend/dashboard/user">
+                  <i class="text-white bi bi-person-circle"></i>
+                  <span class="nav-item text-white">User</span>
               </a></li>
-              <li class="data-title"><a href="">
-                  <i class="icon-img bi bi-instagram"></i>
-                  <span class="nav-item text-white">Instagram</span>
-              </a></li>
-              <li class="data-title"><a href="">
-                  <i class="icon-img bi bi-youtube"></i>
-                  <span class="nav-item text-white">Youtube</span>
-              </a></li>
-              <li class="data-title"><a href="">
-                  <i class="icon-img bi bi-twitter"></i>
-                  <span class="nav-item text-white">Twitter</span>
-              </a></li>
-              <li class="data-title"><a href="">
-                  <i class="icon-img bi bi-github"></i>
-                  <span class="nav-item text-white">Github</span>
-              </a></li>
-          </ul>
+            </ul>
           </nav>
       </div>
-      <div class="col-md-9 main-bg">
+      <div class="col-md-10 main-bg">
         
         <div class="col">
         <h1 class="h2 border-bottom border-secondary">DashBoard</h1>
           <div class="row">
-            <div class="col-md-1 my-2 mx-2"></div>
-            <div class="col-md-4 my-2 mx-2 border rounded-lg border-secondary content">
+            <div class="col-md-1 mx-2 my-5"></div>
+            <div class="col-md-4 mx-2 my-5 border rounded-lg border-secondary content">
               <canvas id="myChart"></canvas>
             </div>
-            <div class="col-md-1 my-2 mx-2"></div>
-            <div class="col-md-4 my-2 mx-2 border rounded-lg border-secondary content">
-              <canvas id="myDoughnutChart"></canvas>
+            <div class="col-md-1 mx-2 my-5"></div>
+            <div class="col-md-4 mx-2 my-5 border rounded-lg border-secondary content">
+              <canvas id="menberChart"></canvas>
             </div>
           </div>
-          <div class="row border rounded-lg border-secondary my-3 mx-3 content">
-            <div class="col-md-4 my-2">
-              <h3>各出版社書籍量統計：</h3>
+          <div class="row border rounded-lg border-secondary mx-3 my-5 content">
+            <div class="col-md-6 my-2">
+              <h3>{{ year }}各月份借書紀錄統計：</h3>
               <ul>
-                {% for pub, cnt in publisher_data_list_zip %}
-                  <li>出版社 {{ pub }} 有 {{ cnt }} 本書。</li>
+                {% for mon, cnt in month_zip %}
+                  <li> {{ mon }} 月份有 {{ cnt }} 筆記錄。</li>
                 {% endfor %}
               </ul>
             </div>
-            <div class="col-md-4 my-2">
-              <h3>各類書籍借閱量統計：</h3>
+            <div class="col-md-6 my-2">
+              <h3>{{ year }}年各月份新加入會員統計</h3>
               <ul>
-                {% for cat, cnt in category_data_list_zip %}
-                <li> {{ cat }} 有 {{ cnt }} 本書。</li>
+                {% for men, cnt in menber_zip %}
+                <li> {{ men }} 月份有 {{ cnt }} 位新加入會員。</li>
                 {% endfor %}
               </ul>
             </div>
-            <div class="col-md-4 my-2">
+            {% comment %} <div class="col-md-4 my-2">
                 <h3>其他統計：</h3>
                 <ul>
                   <li>借閱次數總計: {{ borrows_count }} </li>
@@ -93,7 +74,7 @@
                   <li>未歸還總計: {{ not_returned_count }} </li>
                   <li>會員人數: {{ user_count }} </li>
                 </ul>
-            </div>
+            </div> {% endcomment %}
           </div>
           <div class="row">
               <div class="col-md-4 my-2">
@@ -107,68 +88,87 @@
           </div>
   </div>
 </div>
+<footer class="container">
+  <ul class="d-flex justify-content-between" style="list-style-type: none; font-size:20px; bottom:0;">
+    <li class="data-title"><a href="#">
+      <i class="text-dark bi bi-meta"></i>
+      <span class="nav-item text-dark">Meta</span>
+    </a></li>
+    <li class="data-title"><a href="">
+      <i class="text-dark bi bi-messenger"></i>
+      <span class="nav-item text-dark">Messenger</span>
+    </a></li>
+    <li class="data-title"><a href="">
+      <i class="text-dark bi bi-instagram"></i>
+      <span class="nav-item text-dark">Instagram</span>
+    </a></li>
+    <li class="data-title"><a href="">
+      <i class="text-dark bi bi-youtube"></i>
+      <span class="nav-item text-dark">Youtube</span>
+    </a></li>
+    <li class="data-title"><a href="">
+      <i class="text-dark bi bi-twitter"></i>
+      <span class="nav-item text-dark">Twitter</span>
+      </a></li>
+      <li class="data-title"><a href="">
+        <i class="text-dark bi bi-github"></i>
+        <span class="nav-item text-dark">Github</span>
+      </a></li>
+      <li class="data-title"><a href="">
+        <i class="text-dark bi bi-facebook"></i>
+        <span class="nav-item text-dark">FaceBook</span>
+      </a></li>
+    </ul>
+  </footer>
 
 <script>
   const ctx = document.getElementById('myChart');
   
-  const labels = {{ publisher_data_list.publisher|safe }};
-  const data = {{ publisher_data_list.count }};
+  const labels = {{ month_list|safe }};
+  const data = {{ month_count|safe }};
   
   new Chart(ctx, {
     type: 'bar',
     data: {
       labels: labels,
-      datasets: [{
-        label: '各出版社書籍量統計',
-        data: data,
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
+  datasets: [{
+    label: '各月份借書紀錄統計：',
+    data: data,
+    borderWidth: 1
+  }]
+},
+options: {
+  scales: {
+    y: {
+      beginAtZero: true
     }
-  });
+  }
+}
+});
 </script>
 <script>
-  const ctx2 = document.getElementById('myDoughnutChart');
-  const d_labels = {{ category_data_list.book_category|safe }};
-  const d_data = {{ category_data_list.count }};
-  const dataDoughnut = {
-    labels: d_labels,
-    datasets: [{
-      label: '總計',
-      data: d_data,
-      backgroundColor: [
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)',
-      'rgb(0, 255, 0)',
-      'rgb(153, 153, 255)',
-      ],
-      hoverOffset: 4
-    }]
-  };
+  const ctx2 = document.getElementById('menberChart');
+  
+  const labels2 = {{ menber_list|safe }};
+  const data2 = {{ menber_count|safe }};
   
   new Chart(ctx2, {
-    type: 'doughnut',
-    data: dataDoughnut,
-    options: {
-      plugins: {
-        title: {
-          display: true,
-          text: '各類書籍借閱量統計',
-          font: {
-            size: 16,
-            style: 'bold',
-          },
-        },
-      },
-    },
-  });
-  
+    type: 'bar',
+    data: {
+      labels: labels2,
+  datasets: [{
+    label: '各月份新加入會員統計',
+    data: data2,
+    borderWidth: 1
+  }]
+},
+options: {
+  scales: {
+    y: {
+      beginAtZero: true
+    }
+  }
+}
+});
 </script>
 {% endblock %}
