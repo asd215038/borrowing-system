@@ -5,13 +5,15 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count
 import json
 from django.core.paginator import Paginator
 from django.views.generic import ListView
+from datetime import datetime
+from collections import Counter
 # Create your views here.
 def index(request):
     books = Book.objects.all()
@@ -168,7 +170,7 @@ def book_give_back(request, pk):
     borrow_records.save()
     return redirect('/accounts/history')  # 重新導向到首頁
 
-def dashboard(request):
+def dashboard_book(request):
     borrows_data = BorrowRecord.objects.all()
     borrows_count = Book.objects.count() #借閱次數總計
     not_returned_count = BorrowRecord.objects.filter(return_state=False).count() #未歸還總計
@@ -198,7 +200,51 @@ def dashboard(request):
     category_data_list={'book_category': c_name, 'count':c_count}
     category_data_list_zip = zip(c_name, c_count)
     user_count = User.objects.count()
-    return render(request, 'backend/dashboard.html', locals())
+    return render(request, 'backend/dashboard_book.html', locals())
+
+def dashboard_user(request):
+    records = BorrowRecord.objects.all()
+    borrow_dates = [record.borrow_time.strftime('%Y-%m-%d') for record in records]
+    borrow_counts = [records.filter(borrow_time=record.borrow_time).count() for record in records]
+    dates_list = []
+    for d in borrow_dates:
+        d_mon = d.split('-')[1]
+        dates_list.append(d_mon)
+    month_dict = {}
+    month_list = []
+    count_dict = Counter(dates_list)
+    month_count = list(count_dict.values())
+    for k in dates_list:
+        if k not in month_list:
+            month_list.append(k)
+
+    for i in dates_list:
+        if i not in month_dict:
+            month_dict[i] = 1
+        else:
+            month_dict[i] += 1
+    month_zip = zip(month_list, month_count)
+
+    all_users = User.objects.all()
+    date_joined_list = [user.date_joined.strftime('%m') for user in all_users]
+    menber_dict = {}
+    menber_list = []
+    count_m_dict = Counter(date_joined_list)
+    menber_count = list(count_m_dict.values())
+    for m in date_joined_list:
+        if m not in menber_list:
+            menber_list.append(m)
+
+    for d in date_joined_list:
+        if d not in menber_dict:
+            menber_dict[d] = 1
+        else:
+            menber_dict[d] += 1
+    menber_zip = zip(menber_list, menber_count)
+
+    today = datetime.today()
+    year = today.year
+    return render(request, 'backend/dashboard_user.html', locals())
 
 def detail_view(request, pk):
     book = Book.objects.get(id=pk)
