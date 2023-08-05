@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
     <h1 class="h1 d-flex justify-content-center">
-        借閱紀錄
+        借閱紀錄管理
     </h1>
     <table id='table_id' class="display table table-bordered table-striped">
         <thead class="thead-dark">
@@ -16,7 +16,7 @@
             {% for request in giveback_requests %}
             <tr class="col-4">
                 <td>{{ request.book.book_name }}</td>
-                <td>{{ request.borrow_time }}</td>
+                <td>{{ request.borrow_time|date:"Y-m-d" }}</td>
                 <td>
                     {% if request.return_state_request == 1 %}
                     <a type="submit" href="/backend/history/management/approve/{{request.id}}" class="btn btn-success">確認</a>
@@ -31,7 +31,15 @@
 </div>
 <script>
     $(document).ready( function () {
-         $('#table_id').DataTable(); 
-     } );
- </script>
+        $('#table_id').DataTable({
+            "order": [[1, "desc"]]
+        }); 
+    } );
+</script>
 {% endblock  %}
+
+var table = new DataTable('#myTable', {
+    language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/zh-HANT.json',
+    },
+});
